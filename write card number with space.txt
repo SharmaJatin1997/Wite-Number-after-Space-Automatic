@@ -1,0 +1,43 @@
+ getBinding().etCardNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                beforeString = s.toString();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                afterString = s.toString();
+                if (afterString.length() > beforeString.length()) {
+                    //FOR INSERTION
+                    if (afterString.length() == 4)
+                        insertSpace(afterString);
+                    else if (afterString.length() >= 4 && !afterString.endsWith(" ")
+                            && afterString.replace(" ", "").length() % 4 == 0)
+                        insertSpace(afterString);
+                } else {
+                    //FOR DELETION
+                    if (afterString.endsWith(" "))
+                        removeSpace(afterString);
+                }
+            }
+        });
+    }
+
+    private void insertSpace(String string) {
+        StringBuilder sb = new StringBuilder(string);
+        sb.append(" ");
+        getBinding().etCardNumber.setText(sb);
+        getBinding().etCardNumber.setSelection(getBinding().etCardNumber.getText().length());
+    }
+
+    private void removeSpace(String string) {
+        StringBuilder sb = new StringBuilder(string);
+        sb.deleteCharAt(string.length() - 1);
+        getBinding().etCardNumber.setText(sb);
+        getBinding().etCardNumber.setSelection(getBinding().etCardNumber.getText().length());
+    }
